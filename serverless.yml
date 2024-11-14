@@ -1,0 +1,66 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: hkconsulting
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: apidemo
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: apidemo
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: dev
+
+functions:
+  hello:
+    handler: src/handler.hello
+    events:
+      - http:
+          path: /hello
+          method: get
+  #Notes
+  createNote:
+    handler: src/controllers/noteCtl.createNote
+    events:
+      - http:
+          path: /note
+          method: post
+  getNote:
+    handler: src/controllers/noteCtl.getNote
+    events:
+      - http:
+          path: /note/{noteId}
+          method: get
+          request: 
+            parameters: 
+              paths: 
+                noteId: true
+  listNotes:
+    handler: src/controllers/noteCtl.listNotes
+    events:
+      - http:
+          path: /note
+          method: get
+  deleteNote:
+    handler: src/controllers/noteCtl.deleteNote
+    events:
+      - http:
+          path: /note/{noteId}
+          method: delete
+          request: 
+            parameters: 
+              paths: 
+                noteId: true
+  updateNote:
+    handler: src/controllers/noteCtl.updateNote
+    events:
+      - http:
+          path: /note/{noteId}
+          method: put
+          request: 
+            parameters: 
+              paths: 
+                noteId: true
+
+
+plugins:
+  - serverless-offline
